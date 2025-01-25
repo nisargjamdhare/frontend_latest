@@ -1,0 +1,94 @@
+/* Ensure the whole page has a scrollbar if needed */body {
+  height: 100%;
+  margin: 0;
+  overflow-y: auto; /* Allows vertical scrolling on the page */
+}
+
+
+
+/* Header styling */
+.test-form-header {
+  text-align: center;
+}
+
+.test-form-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Form content area with scrollable property */
+.test-form-content {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Ensures that the content becomes scrollable */
+  max-height: calc(100vh - 120px); /* Adjust form content height based on the header and other sections */
+}
+
+/* Styling for the skills container */
+.skills-container {
+  margin-bottom: 20px;
+}
+
+.skill-item {
+  margin-bottom: 15px;
+}
+
+.skill-label {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.skill-select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+
+
+
+/* Styling for demo interview section */
+.demo-interview-section {
+  margin-top: 20px;
+}
+
+.demo-interview-label {
+  font-size: 16px;
+}
+
+.demo-interview-checkbox {
+  margin-right: 10px;
+}
+
+/* Submit button styling */
+.submit-button-container {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.submit-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #00ff44;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+
+/* Ensure the entire page scrolls if needed */
+.redirect-button-container {
+  margin-top: 20px;
+}
+
+
+
+
+

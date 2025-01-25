@@ -1,0 +1,145 @@
+/* General Reset and Body Styling */
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevent scrolling */
+  height: 100%; /* Ensure the body takes up the entire viewport */
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Sour+Gummy:wght@300;700&display=swap');
+
+/* Keyframes for Text Animation */
+@keyframes colorChange {
+  0% {
+    text-shadow: 2px 2px 5px rgb(6, 6, 6);
+  }
+  33% {
+    text-shadow: 2px 2px 5px rgb(123, 10, 203);
+  }
+  66% {
+    text-shadow: 2px 2px 5px rgb(11, 145, 11);
+  }
+  100% {
+    text-shadow: 2px 2px 5px rgb(134, 21, 21);
+  }
+}
+
+/* Heading Styling */
+h1 {
+  font-family: "Sour Gummy", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 50px;
+  font-style: normal;
+  font-size: 60px;
+  font-variation-settings: "wdth" 100;
+  text-shadow: 2px 2px 5px rgba(222, 39, 39, 1); /* Initial shadow */
+  animation: colorChange 6s infinite; /* Apply animation */
+}
+
+/* App Container Styling */
+.App {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Fill the viewport height */
+  width: 100vw; /* Fill the viewport width */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.App-content {
+  text-align: center;
+  color: white;
+}
+
+/* Authentication Buttons */
+.auth-buttons {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 15px; /* Space between buttons */
+}
+
+.auth-button {
+  font-family: "Sour Gummy", sans-serif;
+  font-size: 20px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.auth-button:hover {
+  background-color: #f7f7f7;
+  color: black; /* Invert color scheme on hover */
+}
+
+/* Start Button */
+.start-button {
+  font-family: "Sour Gummy", sans-serif;
+  font-size: 20px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.start-button:hover {
+  background-color: #f7f7f7;
+  color: black;
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 100%;
+  position: relative; /* To position the close button within the modal */
+}
+
+/* Modal Close Button */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 30px;
+  color: #aaa;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+/* Register Component */
+
+
+
+
