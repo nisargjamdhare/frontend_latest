@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import useClipboard from "react-use-clipboard";
+import { useLocation } from 'react-router-dom';
 
 const SpeechToText = () => {
   const [textToCopy, setTextToCopy] = useState('');
@@ -8,6 +9,8 @@ const SpeechToText = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [timer, setTimer] = useState(0);
   const { transcript, browserSupportsSpeechRecognition } = useSpeechRecognition();
+  const location = useLocation();
+  const formResponses = location.state?.formResponses || [];
 
   // Update textToCopy whenever the transcript changes
   useEffect(() => {
@@ -42,42 +45,52 @@ const SpeechToText = () => {
     startListening();
   };
 
-  // Handle submit and log the text as JSON
+  // Handle submit and log the combined response
   const handleSubmit = () => {
     SpeechRecognition.stopListening();
     setIsRecording(false);
-    const formResponse = { Recording: transcript }; // Capture the response
-    console.log('Form Response:', formResponse); // Log the formResponse to the console
+
+    // Combine the form responses and interview recording
+    const combinedResponse = {
+      formResponses: formResponses,
+      recording: transcript
+    };
+
+    console.log('Combined Response:', combinedResponse);
     setTextToCopy(''); // Clear the text state
     setTimer(0);
   };
 
   // Handle unsupported browsers
   if (!browserSupportsSpeechRecognition) {
-    return <p>Your browser does not support speech recognition.</p>;
+    return <div>Your browser does not support speech recognition.</div>;
   }
 
   return (
     <div style={styles.container}>
       <div style={styles.mainContent}>
-        <p style={styles.timer}>{timer} seconds</p>
-        {textToCopy ? (
-          <p>{textToCopy}</p>
-        ) : (
-          <p>Click the "Start Listening" button to begin recording.</p>
-        )}
-      </div>
-
-      <div style={styles.buttonContainer}>
-        <button style={styles.button} onClick={startListening}>
-          Start
-        </button>
-        <button style={styles.button} onClick={restartListening}>
-          Restart
-        </button>
-        <button style={styles.button} onClick={handleSubmit}>
-          Submit
-        </button>
+        <div style={styles.timer}>Recording Timer: {timer} seconds</div>
+        <div>{textToCopy || "Click 'Start' to begin recording."}</div>
+        <div style={styles.buttonContainer}>
+          <button
+            onClick={startListening}
+            style={styles.button}
+          >
+            Start
+          </button>
+          <button
+            onClick={restartListening}
+            style={styles.button}
+          >
+            Restart
+          </button>
+          <button
+            onClick={handleSubmit}
+            style={styles.button}
+          >
+            Submit
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -136,3 +149,4 @@ const styles = {
 };
 
 export default SpeechToText;
+  

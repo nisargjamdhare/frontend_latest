@@ -1,22 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../Css/TestForm.css';
 
-// SkillResponse Model
-function SkillResponse(question, answer) {
-  this.question = question;
-  this.answer = answer;
-}
-
-// InterviewForm Model
-function InterviewForm() {
-  this.formResponse = []; // Array of SkillResponse objects
-  this.interviewResponse = ''; // Interview response as a string
-}
-
 const TestForm = () => {
+  const navigate = useNavigate();
   const [skills, setSkills] = useState({});
   const [isReadyToRecord, setIsReadyToRecord] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isFormValid, setIsFormValid] = useState(false);
 
   const skillLevels = [
     'Choose option', 'Not interested', 'Poor', 'Beginner', 
@@ -30,42 +21,51 @@ const TestForm = () => {
     { name: 'Cyber Security', defaultValue: 'Choose option' },
     { name: 'Computer Networking', defaultValue: 'Choose option' },
     { name: 'Software Development', defaultValue: 'Choose option' },
-    { name: 'Programming Skills', defaultValue: 'Professional' },
+    { name: 'Programming Skills', defaultValue: 'Choose option' },
     { name: 'Project Management', defaultValue: 'Choose option' },
     { name: 'Computer Forensics Fundamentals', defaultValue: 'Choose option' }
   ];
 
-  const interviewForm = new InterviewForm();
-
+  // Initialize skills state
   useEffect(() => {
-    const initialSkills = Object.fromEntries(
-      skillCategories.map(category => [category.name, category.defaultValue])
-    );
+    const initialSkills = {};
+    skillCategories.forEach(category => {
+      initialSkills[category.name] = category.defaultValue;
+    });
     setSkills(initialSkills);
   }, []);
 
-  const handleSkillChange = (skill, value) => {
-    setSkills(prev => ({
-      ...prev,
-      [skill]: value
+  // Validate form whenever skills change
+  useEffect(() => {
+    const isValid = Object.values(skills).every(value => 
+      value && value !== 'Choose option'
+    );
+    setIsFormValid(isValid);
+  }, [skills]);
+
+  const handleSkillChange = (skillName, value) => {
+    setSkills(prevSkills => ({
+      ...prevSkills,
+      [skillName]: value
     }));
   };
 
   const handleSubmit = () => {
-    const responses = Object.entries(skills).map(([question, answer]) => ({
+    if (!isFormValid) {
+      alert('Please select an option for all skills before submitting.');
+      return;
+    }
+
+    const formattedResponses = Object.entries(skills).map(([question, answer]) => ({
       question,
       answer
     }));
 
-    console.log('Question-Answer Responses:', responses);
+    // Store form responses and redirect to the interview page
+    const formData = JSON.stringify(formattedResponses);
+    localStorage.setItem('formResponses', formData);
 
-    // Store responses in the interviewForm object
-    responses.forEach(({ question, answer }) => {
-      interviewForm.formResponse.push(new SkillResponse(question, answer));
-    });
-    console.log('Interview Form Responses:', interviewForm.formResponse);
-
-    setIsSubmitted(true); // Mark as submitted to show the next step
+    setIsSubmitted(true);
   };
 
   const handleReadyToRecord = (e) => {
@@ -74,17 +74,7 @@ const TestForm = () => {
 
   const handleRedirectToInterview = () => {
     if (isReadyToRecord) {
-      // Serialize the interviewForm object to query parameters
-      const queryParams = new URLSearchParams({
-        formResponse: JSON.stringify(interviewForm.formResponse),
-        interviewResponse: interviewForm.interviewResponse,
-      }).toString();
-
-      // Redirect to the next page with the interviewForm data as query parameters
-      window.open(`/speechtotext?${queryParams}`, '_blank');
-      console.log("passed the form response to the next page");
-    } else {
-      console.log('User is not ready for the interview.');
+      navigate('/speechtotext', { state: { formResponses: JSON.parse(localStorage.getItem('formResponses')) } });
     }
   };
 
@@ -94,13 +84,13 @@ const TestForm = () => {
         <h2 className="test-form-title">RATE YOURSELF...!!</h2>
       </div>
 
-      <form className="test-form-content">
+      <div className="test-form-content">
         <div className="skills-container">
           {skillCategories.map((category) => (
             <div key={category.name} className="skill-item">
               <label className="skill-label">{category.name}</label>
               <select
-                value={skills[category.name]}
+                value={skills[category.name] || 'Choose option'}
                 onChange={(e) => handleSkillChange(category.name, e.target.value)}
                 className="skill-select"
               >
@@ -113,62 +103,64 @@ const TestForm = () => {
             </div>
           ))}
         </div>
-      </form>
 
-      <div className="submit-button-container">
         {!isSubmitted && (
-          <button
-            style={{
-              width: "100%",
-              padding: "10px",
-              backgroundColor: "#4CAF50",
-              color: "white",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-            type="button"
-            onClick={handleSubmit}
-          >
-            Submit
-          </button>
+          <div className="submit-button-container">
+            <button
+              className="submit-button"
+              onClick={handleSubmit}
+              disabled={!isFormValid}
+              style={{
+                width: "100%",
+                padding: "10px",
+                backgroundColor: isFormValid ? "#4CAF50" : "#cccccc",
+                color: "white",
+                border: "none",
+                borderRadius: "4px",
+                cursor: isFormValid ? "pointer" : "not-allowed",
+                marginTop: "20px"
+              }}
+            >
+              Submit
+            </button>
+          </div>
+        )}
+
+        {isSubmitted && (
+          <>
+            <div className="checkbox-container">
+              <label style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '20px' }}>
+                <input
+                  type="checkbox"
+                  checked={isReadyToRecord}
+                  onChange={handleReadyToRecord}
+                />
+                I am ready to record a demo audio interview
+              </label>
+            </div>
+
+            {isReadyToRecord && (
+              <div className="redirect-button-container">
+                <button
+                  onClick={handleRedirectToInterview}
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    backgroundColor: "#4CAF50",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    marginTop: "20px"
+                  }}
+                >
+                  Proceed to Interview
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
-
-      {isSubmitted && (
-        <>
-          <div className="checkbox-container">
-            <label>
-              <input
-                type="checkbox"
-                checked={isReadyToRecord}
-                onChange={handleReadyToRecord}
-              />
-              I am ready to record a demo audio interview
-            </label>
-          </div>
-
-          {isReadyToRecord && (
-            <div className="redirect-button-container">
-              <button
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  backgroundColor: "#4CAF50",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                }}
-                type="button"
-                onClick={handleRedirectToInterview}
-              >
-                Proceed to Interview
-              </button>
-            </div>
-          )}
-        </>
-      )}
     </div>
   );
 };
