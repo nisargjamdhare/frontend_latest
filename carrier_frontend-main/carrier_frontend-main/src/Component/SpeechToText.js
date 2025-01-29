@@ -64,7 +64,7 @@ const SpeechToText = () => {
       console.log("Sending Combined Response:", JSON.stringify(combinedResponse, null, 2));
   
       // API call
-      const apiUrl = "http://localhost:5000/User/modelResponse";
+      const apiUrl = "https://carrier-api-backend-new.onrender.com/User/modelResponse";
       const response = await axios.post(apiUrl, combinedResponse, {
         headers: {
           "Content-Type": "application/json",
@@ -72,19 +72,34 @@ const SpeechToText = () => {
       });
   
       const data = response.data; // Assuming response.data contains { careerFields: [...] }
-      if (data && data.careerFields) {
-        localStorage.setItem("careerFieldsData", JSON.stringify(data.careerFields));
+      if (response.data) {
+        try {
+          // Clean up the string if needed
+          let dataString = response.data;
+          if (typeof dataString === 'string') {
+            // Add missing brackets if they're not present
+            if (!dataString.endsWith(']}')) {
+              dataString = dataString + ']}';
+            }
+            const parsedData = JSON.parse(dataString);
+            console.log("Parsed data:", parsedData);
+            localStorage.setItem("careerFieldsData", JSON.stringify(parsedData));
+            window.open('/careerDetails', '_blank');
+          } else {
+            // If it's already an object, store it directly
+            localStorage.setItem("careerFieldsData", JSON.stringify(response.data));
+            window.open('/careerDetails', '_blank');
+          }
+        } catch (error) {
+          console.error("Error parsing response data:", error);
+          // Log the problematic string for debugging
+          console.log("Problematic string:", response.data);
+        }
       }
-  
-  
-      // Open the new component in a new tab
-      window.open('/careerDetails', '_blank');
-  
     } catch (error) {
       console.error("Error during API call:", error);
     }
   };
-
   // Handle unsupported browsers
   if (!browserSupportsSpeechRecognition) {
     return <div>Your browser does not support speech recognition.</div>;

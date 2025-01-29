@@ -89,7 +89,7 @@ const TestForm = () => {
   return (
     <div className="test-form-container">
       <div className="test-form-header">
-        <h2 className="test-form-title">RATE YOURSELF...!!</h2>
+        <h2 className="test-form-title">Take your Test...!!</h2>
       </div>
 
       <div className="test-form-content">
