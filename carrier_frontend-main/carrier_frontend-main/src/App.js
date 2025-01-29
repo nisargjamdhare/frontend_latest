@@ -6,6 +6,7 @@ import StartTest from "./Component/StartTest";
 import HomePage from "./Component/HomePage";
 import TestForm from './Component/TestForm';
 import SpeechToText from "./Component/SpeechToText";
+import carrerDetails from "./Component/CarrerDetails";
 
 function App() {
   const location = useLocation();
@@ -33,6 +34,8 @@ function App() {
         <Route path="/starttest" element={<StartTest />} />
         <Route path="/testform" element={<TestForm isDemoInterview={true} />} />
         <Route path="/speechtotext" element={<SpeechToText />} />
+        
+        <Route path="/carrerdetails" element={<carrerDetails />} />
       </Routes>
     </div>
   );

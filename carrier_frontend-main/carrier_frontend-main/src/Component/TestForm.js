@@ -10,21 +10,29 @@ const TestForm = () => {
   const [isFormValid, setIsFormValid] = useState(false);
 
   const skillLevels = [
-    'Choose option', 'Not interested', 'Poor', 'Beginner', 
-    'Average', 'Intermediate', 'Excellent', 'Professional'
+    "Choose option",
+    "Not Interested",
+   "Average",
+    "Highly Interested",
+    "Passionate (Want to build a career in this)"
   ];
 
   const skillCategories = [
-    { name: 'Database Fundamentals', defaultValue: 'Choose option' },
-    { name: 'Computer Architecture', defaultValue: 'Choose option' },
-    { name: 'Distributed Computing Systems', defaultValue: 'Choose option' },
-    { name: 'Cyber Security', defaultValue: 'Choose option' },
-    { name: 'Computer Networking', defaultValue: 'Choose option' },
-    { name: 'Software Development', defaultValue: 'Choose option' },
-    { name: 'Programming Skills', defaultValue: 'Choose option' },
-    { name: 'Project Management', defaultValue: 'Choose option' },
-    { name: 'Computer Forensics Fundamentals', defaultValue: 'Choose option' }
-  ];
+  { name: "Mathematics Interest", defaultValue: "Choose option" },
+  { name: "Science & Research Interest", defaultValue: "Choose option" },
+  { name: "Creativity & Design Interest", defaultValue: "Choose option" },
+  { name: "Logical & Analytical Thinking", defaultValue: "Choose option" },
+  { name: "Public Speaking & Communication", defaultValue: "Choose option" },
+  { name: "Problem-Solving Ability", defaultValue: "Choose option" },
+  { name: "Entrepreneurial & Business Skills", defaultValue: "Choose option" },
+  { name: "Teamwork & Collaboration", defaultValue: "Choose option" },
+  { name: "Technological & Programming Interest", defaultValue: "Choose option" },
+  { name: "Healthcare & Medical Science Interest", defaultValue: "Choose option" },
+  { name: "Social Work & Helping Others", defaultValue: "Choose option" },
+  { name: "Finance & Investment Interest", defaultValue: "Choose option" },
+  { name: "Arts & Performing Arts Interest", defaultValue: "Choose option" },
+  { name: "Writing & Journalism Interest", defaultValue: "Choose option" }
+];
 
   // Initialize skills state
   useEffect(() => {
